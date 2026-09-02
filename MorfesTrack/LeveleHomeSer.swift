@@ -3,7 +3,6 @@ import OneSignalFramework
 import WebKit
 
 struct LeveleHomeSer: View {
-    @State private var luckAcceptedValue: Bool?
     @State private var fortuneStart: String?
     @State private var firstChanceView: Bool = true
     
@@ -13,23 +12,21 @@ struct LeveleHomeSer: View {
     var body: some View {
         ZStack {
             
-            if luckAcceptedValue != nil {
-                if fortuneStart == "Blingox Luck" || destinyOpenedOnce == true {
-                    
-                    ZStack {
-                        MorfesTrackApp()
-                    }
-                    .onAppear {
-                        AppDelegate.shared = .all
-                        UIDevice.current.setValue(UIInterfaceOrientation.portrait, forKey: "orientation")
-                        
-                        firstChanceView = false
-                        destinyOpenedOnce = true
-                    }
-                } else {
-                    OpalFirePlay(destinyOpenedOnce: $destinyOpenedOnce)
-                        .onAppear { firstChanceView = false }
+            if fortuneStart == "Blingox Luck" || destinyOpenedOnce == true {
+
+                ZStack {
+                    MorfesTrackApp()
                 }
+                .onAppear {
+                    AppDelegate.shared = .all
+                    UIDevice.current.setValue(UIInterfaceOrientation.portrait, forKey: "orientation")
+
+                    firstChanceView = false
+                    destinyOpenedOnce = true
+                }
+            } else {
+                OpalFirePlay(destinyOpenedOnce: $destinyOpenedOnce)
+                    .onAppear { firstChanceView = false }
             }
             
             if firstChanceView {
@@ -37,7 +34,7 @@ struct LeveleHomeSer: View {
             }
         }
         .onAppear {
-            OneSignal.Notifications.requestPermission { luckAcceptedValue = $0 }
+            OneSignal.Notifications.requestPermission { _ in }
             
             if openFateGate {
                 guard let serendipityFind = URL(string: "https://prevpresented.shop/blingoxluck/blingoxluck.json") else { return }
